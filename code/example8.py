@@ -2,6 +2,15 @@ import random
 import curses
 from curses import textpad
 
+OPPOSITE_DIRECTION_DICT = {
+	curses.KEY_UP: curses.KEY_DOWN,
+	curses.KEY_DOWN: curses.KEY_UP,
+	curses.KEY_RIGHT: curses.KEY_LEFT,
+	curses.KEY_LEFT: curses.KEY_RIGHT
+}
+
+DIRECTIONS_LIST = [curses.KEY_RIGHT, curses.KEY_LEFT, curses.KEY_DOWN, curses.KEY_UP]
+
 def create_food(snake, box):
 	"""Simple function to find coordinates of food which is inside box and not on snake body"""
 	food = None
@@ -44,9 +53,9 @@ def main(stdscr):
 	while 1:
 		# non-blocking input
 		key = stdscr.getch()
-
-		# set direction if user pressed any arrow key
-		if key in [curses.KEY_RIGHT, curses.KEY_LEFT, curses.KEY_DOWN, curses.KEY_UP]:
+			
+		# set direction if user pressed any arrow key and that key is not opposite of current direction
+		if key in DIRECTIONS_LIST and key != OPPOSITE_DIRECTION_DICT[direction]:
 			direction = key
 
 		# find next position of snake head
